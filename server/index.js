@@ -28,7 +28,6 @@ app.use('/api/submissions', submissionRoutes);
 app.get('/', (req, res) => res.send('Task Pipeline API is running...'));
 
 // Global Error Handler
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err.message);
   res.status(400).json({ message: err.message });

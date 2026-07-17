@@ -1,4 +1,5 @@
 import { deleteTask } from '../../api/tasks';
+import { getDueDateStatus } from '../../utils/dateUtils';
 
 /* ── SVG Action Icons ── */
 const IconEdit = () => (
@@ -127,7 +128,19 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
 
               {/* Due date */}
               <td className="table-td" style={{ color: '#6B7280', whiteSpace: 'nowrap' }}>
-                {fmtDate(task.dueDate)}
+                <div className="flex items-center">
+                  <span>{fmtDate(task.dueDate)}</span>
+                  {getDueDateStatus(task.dueDate) === 'Overdue' && (
+                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider status-badge-Overdue">
+                      Overdue
+                    </span>
+                  )}
+                  {getDueDateStatus(task.dueDate) === 'Due Soon' && (
+                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider status-badge-DueSoon">
+                      Due Soon
+                    </span>
+                  )}
+                </div>
               </td>
 
               {/* Created */}
