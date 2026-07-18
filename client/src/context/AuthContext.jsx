@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import API from '../api/axios';
 
 const AuthContext = createContext(null);
 
@@ -18,14 +19,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const stored = localStorage.getItem('user');
       if (stored) {
-        const userData = JSON.parse(stored);
-        await fetch('http://localhost:5000/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${userData.token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        await API.post('/auth/logout');
       }
     } catch (error) {
       console.error('Logout error:', error);

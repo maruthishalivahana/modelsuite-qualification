@@ -1,4 +1,4 @@
-﻿const Task = require('../models/Task');
+const Task = require('../models/Task');
 
 // @desc  Get all tasks
 // @route GET /api/tasks
@@ -41,8 +41,14 @@ const createTask = async (req, res) => {
   const { title, description, status, assignedTo, dueDate } = req.body;
   // validation for checking the due date is not in the past:
 
-  if (dueDate && new Date(dueDate) < new Date()) {
-    return res.status(400).json({ message: 'Due date cannot be in the past' });
+  if (dueDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateParts = dueDate.split('T')[0].split('-');
+    const inputDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+    if (inputDate < today) {
+      return res.status(400).json({ message: 'Due date cannot be in the past' });
+    }
   }
   // validation for checking the due date is end here..
 
@@ -70,8 +76,14 @@ const updateTask = async (req, res) => {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).json({ message: 'Task not found' });
 
-    if (req.body.dueDate && new Date(req.body.dueDate) < new Date()) {
-      return res.status(400).json({ message: 'Due date cannot be in the past' });
+    if (req.body.dueDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const dateParts = req.body.dueDate.split('T')[0].split('-');
+      const inputDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+      if (inputDate < today) {
+        return res.status(400).json({ message: 'Due date cannot be in the past' });
+      }
     }
     // including internal fields like createdBy or __v
     const updated = await Task.findByIdAndUpdate(
