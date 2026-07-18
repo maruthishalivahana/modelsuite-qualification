@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Sidebar from '../../components/admin/Sidebar';
 import TasksTable from '../../components/admin/TasksTable';
 import CreateTaskModal from '../../components/admin/CreateTaskModal';
@@ -32,7 +33,7 @@ const AdminDashboard = () => {
       const { data } = await fetchAllTasks();
       setTasks(data);
     } catch {
-      alert('Failed to load tasks');
+      toast.error('Failed to load tasks');
     }
   };
 

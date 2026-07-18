@@ -1,4 +1,5 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { createTask, fetchTalents } from '../../api/tasks';
 
 const STATUS_OPTIONS = ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'];
@@ -14,7 +15,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
     setLoadingTalents(true);
     fetchTalents()
       .then(({ data }) => setTalents(data))
-      .catch(() => alert('Failed to load talents'))
+      .catch(() => toast.error('Failed to load talents'))
       .finally(() => setLoadingTalents(false));
   }, []);
 
@@ -24,10 +25,11 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
     e.preventDefault();
     try {
       const { data } = await createTask({ ...form, assignedTo: form.assignedTo || undefined });
+      toast.success('Task created successfully');
       onCreated(data);
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to create task');
+      toast.error(err.response?.data?.message || 'Failed to create task');
     }
   };
 

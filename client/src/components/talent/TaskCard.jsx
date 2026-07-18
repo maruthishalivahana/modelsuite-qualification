@@ -1,5 +1,6 @@
 import { claimTask } from '../../api/talent';
 import { getDueDateStatus } from '../../utils/dateUtils';
+import { toast } from 'react-toastify';
 
 const STATUS_CLASS = {
   Open:      'status-badge-Open',
@@ -14,9 +15,10 @@ const TaskCard = ({ task, showClaimButton = false, onClaimed }) => {
   const handleClaim = async () => {
     try {
       await claimTask(task._id);
+      toast.success('Task claimed successfully');
       if (onClaimed) onClaimed();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to claim task');
+      toast.error(err.response?.data?.message || 'Failed to claim task');
     }
   };
 

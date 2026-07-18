@@ -1,4 +1,5 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { submitTask } from '../../api/submissions';
 
 const SubmitTaskModal = ({ task, onClose, onSubmitted }) => {
@@ -16,10 +17,11 @@ const SubmitTaskModal = ({ task, onClose, onSubmitted }) => {
     formData.append('notes', notes);
     try {
       await submitTask(task._id, formData);
+      toast.success('Task submitted successfully');
       onSubmitted();
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || 'Submission failed');
+      toast.error(err.response?.data?.message || 'Submission failed');
     }
   };
 

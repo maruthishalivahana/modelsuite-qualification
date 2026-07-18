@@ -1,4 +1,5 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { updateTask, fetchTalents } from '../../api/tasks';
 
 const STATUS_OPTIONS = ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'];
@@ -25,10 +26,11 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
     e.preventDefault();
     try {
       const { data } = await updateTask(task._id, { ...form, assignedTo: form.assignedTo || null });
+      toast.success('Task updated successfully');
       onUpdated(data);
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to update task');
+      toast.error(err.response?.data?.message || 'Failed to update task');
     }
   };
 

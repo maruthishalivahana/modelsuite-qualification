@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Sidebar from '../../components/admin/Sidebar';
 import SubmissionReviewModal from '../../components/admin/SubmissionReviewModal';
 import { fetchAllSubmissions } from '../../api/submissions';
@@ -18,7 +19,7 @@ const SubmissionsPage = () => {
       const { data } = await fetchAllSubmissions();
       setSubmissions(data);
     } catch {
-      alert('Failed to load submissions');
+      toast.error('Failed to load submissions');
     }
   };
 
